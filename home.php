@@ -188,10 +188,140 @@ if (isset($_COOKIE["userB"]))
     <script src="assets/js/jquery-2.1.0.min.js"></script>
     <script src="assets/js/bootstrap.min.js"></script>
  
- 
-
     <script>
         
+        function tipovi() {
+            $.ajax({
+                url: 'popuniTipove.php',
+                success: function (data) {
+                    $("#tip-D").html(data);
+                    $("#tip-I").html(data);
+                }
+            })
+        }
+
+        function tipovi_pretraga() {
+            $.ajax({
+                url: 'popuniTipove.php',
+                success: function (data) {
+                    let t = "<option value='SVI'>Svi</option>" + data;
+                    $("#tip-P").html(t);
+                }
+            })
+        }
+
+        function proizvodi(){
+            $.ajax({
+                url: 'popuniProizvode.php',
+                success: function (data) {
+                    $("#proizvod-I").html(data);
+                    $("#proizvod-O").html(data);
+                }
+            })
+        }
+        
+        function pretraga() {
+            
+            let tip = $("#tip-P").val();
+            let cena = $("#cena-P").val();
+            
+            $.ajax({
+                url: 'pretraga.php',
+                data: {
+                    tip: tip,
+                    cena: cena
+                },
+                success: function (data) {
+                    $("#tabela").html(data);
+                }
+            })
+        }
+
+        function sredi() {
+            
+            let tip = "SVI";
+            let cena = "asc";
+            
+            $.ajax({
+                url: 'pretraga.php',
+                data: {
+                    tip: tip,
+                    cena: cena
+                },
+                success: function (data) {
+                    $("#tabela").html(data);
+                }
+            })
+        }
+
+        tipovi_pretraga();
+        sredi();
+
+        tipovi();
+        proizvodi();
+   
+        
+        function dodaj() {
+            let naziv = $("#naziv-D").val();
+            let tip = $("#tip-D").val();
+            let cena = $("#cena-D").val();
+            
+            $.ajax({
+                url: 'dodaj.php',
+                method: 'post',
+                data: {
+                    naziv: naziv,
+                    tip: tip,
+                    cena: cena
+                },
+                success: function (data) {
+                    $("#uspesno").html(data);
+                    proizvodi();
+                    pretraga();
+                }
+            })
+        }
+
+        function izmeni() {
+            let proizvod = $("#proizvod-I").val();
+            let naziv = $("#naziv-I").val();
+            let tip = $("#tip-I").val();
+            let cena = $("#cena-I").val();
+            $.ajax({
+                url: 'izmeni.php',
+                method: 'post',
+                data: {
+                    proizvod: proizvod,
+                    naziv: naziv,
+                    tip: tip,
+                    cena: cena
+                },
+                success: function (data) {
+
+                    $("#uspesno").html(data);
+                    proizvodi();
+                    pretraga();
+                }
+            })
+        }
+
+        function obrisi() {
+            let proizvod = $("#proizvod-O").val();
+            $.ajax({
+                url: 'obrisi.php',
+                method: 'post',
+                data: {
+                    proizvod: proizvod
+                },
+                success: function (data) {
+
+                    $("#uspesno").html(data);
+                    proizvodi();
+                    pretraga();
+                }
+            })
+        }
+
     </script>
 
   </body>
